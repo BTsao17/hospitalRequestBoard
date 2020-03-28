@@ -11,12 +11,13 @@ class Board extends React.Component {
   render() {
     const { requests, hospitals } = this.props;
 
-    const reqsByIDDesc = requests
-      .map(({ id, hospital_ID, item, quantity, priority, quantityFulfilled, status }) => {
+    const reqsByDate = requests
+      .map(({ id, hospital_ID, dateAdded, item, quantity, priority, quantityFulfilled, status }) => {
         const hospital = hospitals.find((hospital) => hospital.id === hospital_ID);
         return {
           id,
           hospital: hospital.name,
+          dateAdded,
           item,
           quantity,
           priority,
@@ -25,10 +26,10 @@ class Board extends React.Component {
         };
       })
       .sort((a, b) => {
-        return b.id - a.id;
+        return b.dateAdded - a.dateAdded;
       });
 
-    const tableRows = reqsByIDDesc.map(({ id, hospital, item, quantity, priority, quantityFulfilled }) => (
+    const tableRows = reqsByDate.map(({ id, hospital, item, quantity, priority, quantityFulfilled }) => (
       <TableRow key={id} className={`${priority}Priority`}>
         <TableCell component='th' scope='row'>
           {hospital}

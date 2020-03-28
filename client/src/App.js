@@ -28,6 +28,7 @@ class App extends React.Component {
         {
           id: 21,
           hospital_ID: 123,
+          dateAdded: new Date('March 20, 2020 15:00:40 GMT-0700'),
           item: 'surgical masks',
           quantity: 500,
           priority: 'high',
@@ -37,6 +38,7 @@ class App extends React.Component {
         {
           id: 22,
           hospital_ID: 146,
+          dateAdded: new Date('March 22, 2020 10:00:34 GMT-0700'),
           item: 'surgical masks',
           quantity: 300,
           priority: 'mid',
@@ -46,6 +48,7 @@ class App extends React.Component {
         {
           id: 23,
           hospital_ID: 123,
+          dateAdded: new Date('March 22, 2020 11:02:55 GMT-0700'),
           item: 'ventilators',
           quantity: 30,
           priority: 'high',
@@ -55,6 +58,7 @@ class App extends React.Component {
         {
           id: 24,
           hospital_ID: 123,
+          dateAdded: new Date('March 22, 2020 11:07:43 GMT-0700'),
           item: 'latex gloves',
           quantity: 600,
           priority: 'mid',
@@ -64,6 +68,7 @@ class App extends React.Component {
         {
           id: 25,
           hospital_ID: 146,
+          dateAdded: new Date('March 23, 2020 15:00:10 GMT-0700'),
           item: 'scrubs',
           quantity: 50,
           priority: 'low',
