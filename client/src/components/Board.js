@@ -93,24 +93,9 @@ class ReqTable extends React.Component {
   };
 
   render() {
-    const { requests, hospitals } = this.props;
+    const { requests} = this.props;
 
-    const reqsWithHospName = requests.map(
-      ({ id, hospital_ID, dateAdded, item, quantity, quantityFulfilled, status }) => {
-        const hospital = hospitals.find((hospital) => hospital.id === hospital_ID);
-        return {
-          id,
-          hospital: hospital.name,
-          dateAdded,
-          item,
-          quantity,
-          quantityFulfilled,
-          status,
-        };
-      }
-    );
-
-    const sortedArray = this.stableSort(reqsWithHospName, this.getComparator(this.state.order, this.state.orderBy));
+    const sortedArray = this.stableSort(requests, this.getComparator(this.state.order, this.state.orderBy));
     const tableRows = sortedArray.map(({ id, hospital, dateAdded, item, quantity, quantityFulfilled }) => (
       <TableRow key={id}>
         <TableCell component='th' scope='row'>
@@ -156,10 +141,25 @@ class Board extends React.Component {
   render() {
     const { requests, hospitals } = this.props;
 
+    const reqsWithHospName = requests.map(
+      ({ id, hospital_ID, dateAdded, item, quantity, quantityFulfilled, status }) => {
+        const hospital = hospitals.find((hospital) => hospital.id === hospital_ID);
+        return {
+          id,
+          hospital: hospital.name,
+          dateAdded,
+          item,
+          quantity,
+          quantityFulfilled,
+          status,
+        };
+      }
+    );
+
     return (
       <React.Fragment>
         <div>filter bar</div>
-        <ReqTable requests={requests} hospitals={hospitals} />
+        <ReqTable requests={reqsWithHospName} />
       </React.Fragment>
     );
   }
