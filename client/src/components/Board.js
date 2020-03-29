@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -6,6 +7,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 
 class Board extends React.Component {
   render() {
@@ -35,12 +37,16 @@ class Board extends React.Component {
           {hospital}
         </TableCell>
         <TableCell>{item}</TableCell>
-        <TableCell>{quantity}</TableCell>
-        <TableCell>
+        <TableCell align='center'>{quantity}</TableCell>
+        <TableCell align='center'>
           {quantityFulfilled}/{quantity}
         </TableCell>
-        <TableCell>{priority}</TableCell>
-        <TableCell>Donate Button</TableCell>
+        <TableCell align='center'>{priority}</TableCell>
+        <TableCell>
+          <Button variant='outlined' component={Link} to='/donate'>
+            Donate Now
+          </Button>
+        </TableCell>
       </TableRow>
     ));
 
@@ -54,9 +60,9 @@ class Board extends React.Component {
                 <TableRow>
                   <TableCell>Hospital Name</TableCell>
                   <TableCell>Item</TableCell>
-                  <TableCell>Quantity Needed</TableCell>
-                  <TableCell>Quantity Fulfilled</TableCell>
-                  <TableCell>Priority</TableCell>
+                  <TableCell align='center'>Quantity Needed</TableCell>
+                  <TableCell align='center'>Quantity Fulfilled</TableCell>
+                  <TableCell align='center'>Priority</TableCell>
                   <TableCell />
                 </TableRow>
               </TableHead>

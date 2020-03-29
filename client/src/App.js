@@ -94,7 +94,7 @@ class App extends React.Component {
                 path='/'
                 render={() => <Board hospitals={hospitalNamesID} requests={this.state.requests} />}
               />
-              <Route path='/form' render={() => <Form />} />
+              <Route path='/donate' render={() => <Form />} />
             </Switch>
           </main>
         </CssBaseline>
