@@ -43,7 +43,7 @@ function TableHeadings(props) {
   );
 }
 
-class Board extends React.Component {
+class ReqTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -87,7 +87,7 @@ class Board extends React.Component {
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]); //this.getComparator(order, orderBy)(a[0],b[0]), of which a[0], b[0] (the elements) are passed to descendingComparator function
       if (order !== 0) return order;
-      return a[1] - b[1];  //using the index of stabilizedThis to sort if order === 0
+      return a[1] - b[1]; //using the index of stabilizedThis to sort if order === 0
     });
     return stabilizedThis.map((el) => el[0]);
   };
@@ -95,59 +95,71 @@ class Board extends React.Component {
   render() {
     const { requests, hospitals } = this.props;
 
-    const reqsWithHospName = requests
-      .map(({ id, hospital_ID, dateAdded, item, quantity, quantityFulfilled, status }) => {
+    const reqsWithHospName = requests.map(
+      ({ id, hospital_ID, dateAdded, item, quantity, quantityFulfilled, status }) => {
         const hospital = hospitals.find((hospital) => hospital.id === hospital_ID);
         return {
           id,
           hospital: hospital.name,
           dateAdded,
           item,
-          quantity,     
+          quantity,
           quantityFulfilled,
           status,
         };
-      });
+      }
+    );
 
     const sortedArray = this.stableSort(reqsWithHospName, this.getComparator(this.state.order, this.state.orderBy));
-    const tableRows = sortedArray.map(
-      ({ id, hospital, dateAdded, item, quantity, quantityFulfilled }) => (
-        <TableRow key={id}>
-          <TableCell component='th' scope='row'>
-            {hospital}
-          </TableCell>
-          <TableCell>{item}</TableCell>
-          <TableCell align='center'>{quantity}</TableCell>
-          <TableCell align='center'>
-            {quantityFulfilled}/{quantity}
-          </TableCell>
-          <TableCell>{dateAdded.toDateString()}</TableCell>
-          <TableCell>
-            <Button variant='outlined' component={Link} to='/donate'>
-              Donate Now
-            </Button>
-          </TableCell>
-        </TableRow>
-      )
+    const tableRows = sortedArray.map(({ id, hospital, dateAdded, item, quantity, quantityFulfilled }) => (
+      <TableRow key={id}>
+        <TableCell component='th' scope='row'>
+          {hospital}
+        </TableCell>
+        <TableCell>{item}</TableCell>
+        <TableCell align='center'>{quantity}</TableCell>
+        <TableCell align='center'>
+          {quantityFulfilled}/{quantity}
+        </TableCell>
+        <TableCell>{dateAdded.toDateString()}</TableCell>
+        <TableCell>
+          <Button variant='outlined' component={Link} to='/donate'>
+            Donate Now
+          </Button>
+        </TableCell>
+      </TableRow>
+    ));
+
+    return (
+      <React.Fragment>
+        <TableContainer component={Paper}>
+          <Table aria-label='request board'>
+            <TableHeadings
+              order={this.state.order}
+              orderBy={this.state.orderBy}
+              onRequestSort={this.handleRequestSort}
+            />
+            <TableBody>{tableRows}</TableBody>
+          </Table>
+        </TableContainer>
+      </React.Fragment>
     );
+  }
+}
+
+class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const { requests, hospitals } = this.props;
 
     return (
       <React.Fragment>
         <div>filter bar</div>
-        <div>
-          <TableContainer component={Paper}>
-            <Table aria-label='request board'>
-              <TableHeadings
-                order={this.state.order}
-                orderBy={this.state.orderBy}
-                onRequestSort={this.handleRequestSort}
-              />
-              <TableBody>
-                {tableRows}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </div>
+        <ReqTable requests={requests} hospitals={hospitals} />
       </React.Fragment>
     );
   }
