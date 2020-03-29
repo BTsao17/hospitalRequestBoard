@@ -82,17 +82,13 @@ class Board extends React.Component {
 
   stableSort = (array, comparator) => {
     const stabilizedThis = array.map((el, index) => {
-      console.log('element', el, 'index', index);
       return [ el, index ];
     });
     stabilizedThis.sort((a, b) => {
       const order = comparator(a[0], b[0]); //this.getComparator(order, orderBy)(a[0],b[0]), of which a[0], b[0] (the elements) are passed to descendingComparator function
-      console.log('order', order);
       if (order !== 0) return order;
-      console.log('a1', a[1], 'b1', b[1], a[1]-b[1])
       return a[1] - b[1];  //using the index of stabilizedThis to sort if order === 0
     });
-    console.log('stabilized this', stabilizedThis);
     return stabilizedThis.map((el) => el[0]);
   };
 
@@ -113,11 +109,8 @@ class Board extends React.Component {
         };
       });
 
-    console.log('reqsWithHospName', reqsWithHospName);
-
     const sortedArray = this.stableSort(reqsWithHospName, this.getComparator(this.state.order, this.state.orderBy));
-    console.log('sortedArraybyColumn', sortedArray);
-    const tableRowsOrdered = sortedArray.map(
+    const tableRows = sortedArray.map(
       ({ id, hospital, dateAdded, item, quantity, quantityFulfilled }) => (
         <TableRow key={id}>
           <TableCell component='th' scope='row'>
@@ -150,7 +143,7 @@ class Board extends React.Component {
                 onRequestSort={this.handleRequestSort}
               />
               <TableBody>
-                {tableRowsOrdered}
+                {tableRows}
               </TableBody>
             </Table>
           </TableContainer>
