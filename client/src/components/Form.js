@@ -22,7 +22,7 @@ function DonationDets(props) {
           value={reqInfo.quantity}
           fullWidth
           autoFocus
-          onChange={(e) => props.updateChanges(e, 'reqInfo')}
+          onChange={(event) => props.updateChanges(event, 'reqInfo')}
         />
       </div>
       <div>
@@ -49,7 +49,7 @@ function DonorInfo(props) {
           value={donorInfo.name}
           fullWidth
           autoFocus
-          onChange={(e) => props.updateChanges(e, 'donorInfo')}
+          onChange={(event) => props.updateChanges(event, 'donorInfo')}
         />
         <TextField
           name='company'
@@ -57,7 +57,7 @@ function DonorInfo(props) {
           type='string'
           value={donorInfo.company}
           fullWidth
-          onChange={(e) => props.updateChanges(e, 'donorInfo')}
+          onChange={(event) => props.updateChanges(event, 'donorInfo')}
         />
         <TextField
           name='address'
@@ -65,7 +65,7 @@ function DonorInfo(props) {
           type='string'
           value={donorInfo.address}
           fullWidth
-          onChange={(e) => props.updateChanges(e, 'donorInfo')}
+          onChange={(event) => props.updateChanges(event, 'donorInfo')}
         />
         <TextField
           name='email'
@@ -73,7 +73,7 @@ function DonorInfo(props) {
           type='string'
           value={donorInfo.email}
           fullWidth
-          onChange={(e) => props.updateChanges(e, 'donorInfo')}
+          onChange={(event) => props.updateChanges(event, 'donorInfo')}
         />
       </div>
     </div>
@@ -144,16 +144,17 @@ class Form extends React.Component {
     }
   };
 
-  handleFormChange = (e, category) => {
+  handleFormChange = (event, category) => {
     const newInfo = { ...this.state[category] };
-    newInfo[e.target.name] = e.target.value;
+    newInfo[event.target.name] = event.target.value;
     this.setState({
       [category]: newInfo,
     });
   };
 
-  goToReqBoard = (event) => {
-    this.props.history.push('/');
+  handleSubmit = (reqInfo) => (event) => {
+    this.props.updateQuantityFulfilled(event, reqInfo);
+    this.props.history.push(`${this.props.match.url}/success`);
   };
 
   render() {
@@ -173,38 +174,29 @@ class Form extends React.Component {
               </Step>
             ))}
           </Stepper>
-          {activeStep === steps.length ? (
-            <React.Fragment>
-              <Typography variant='h5' gutterBottom>
-                Thank you for your donation!
-              </Typography>
-              <Typography variant='subtitle1'>We have emailed you a copy of the details for your record.</Typography>
-              <div className='button--display'>
-                <Button variant='contained' color='primary' onClick={this.goToReqBoard}>
-                  Back to Request Board
+          <React.Fragment>
+            {this.getStepContent(activeStep)}
+            <div>
+              {activeStep !== 0 && (
+                <Button variant='outlined' onClick={() => this.handleStep(-1)}>
+                  Back
                 </Button>
-              </div>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>
-              {this.getStepContent(activeStep)}
-              <div className='button--display'>
-                {activeStep !== 0 && (
-                  <Button className='checkout__button--margin' onClick={() => this.handleStep(-1)}>
-                    Back
-                  </Button>
-                )}
-                <Button
-                  variant='contained'
-                  color='primary'
-                  className='checkout__button--margin'
-                  onClick={() => this.handleStep(1)}
-                >
-                  {activeStep === steps.length - 1 ? 'Submit' : 'Next'}
+              )}
+              {activeStep !== steps.length - 1 && (
+                <Button variant='outlined' color='primary' onClick={() => this.handleStep(1)}>
+                  Next
                 </Button>
-              </div>
-            </React.Fragment>
-          )}
+              )}
+              <Button variant='outlined' onClick={() => this.props.history.push('/')}>
+                Cancel
+              </Button>
+              {activeStep === steps.length - 1 && (
+                <Button variant='outlined' color='secondary' onClick={this.handleSubmit(this.state.reqInfo)}>
+                  Submit
+                </Button>
+              )}
+            </div>
+          </React.Fragment>
         </Paper>
       </React.Fragment>
     );

@@ -3,7 +3,8 @@ import { Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import './App.css';
-import { Board, Form } from './components';
+import { Board, Form, ConfirmPage } from './components';
+import produce from 'immer';
 
 class App extends React.Component {
   constructor() {
@@ -97,9 +98,26 @@ class App extends React.Component {
     });
   };
 
+  updateQuantityFulfilled = (event, donationInfo) => {
+    const updatedReqsArr = [ ...this.state.requests ].map((req) => {
+      if (req.id === donationInfo.id) {
+        return produce(req, (draft) => {
+          draft.quantityFulfilled += Number(donationInfo.quantity);
+        });
+      }
+      else {
+        return req;
+      }
+    });
+    this.setState({
+      requests: updatedReqsArr,
+    });
+  };
+
   render() {
     const { hospitals } = this.state;
     const hospitalNamesID = hospitals.map(({ id, name }) => ({ id, name }));
+    const unfulfilledReqs = this.state.requests.filter((req) => req.quantityFulfilled / req.quantity < 1);
 
     return (
       <React.Fragment>
@@ -118,21 +136,24 @@ class App extends React.Component {
                   <Board
                     {...routeProps}
                     hospitals={hospitalNamesID}
-                    requests={this.state.requests}
+                    requests={unfulfilledReqs}
                     onRequestChoice={this.handleRequestChoice}
                   />
                 )}
               />
               <Route
+                exact
                 path='/donate/:id'
                 render={(routeProps) => (
                   <Form
                     {...routeProps}
                     hospInfo={this.state.donationFormHospInfo}
                     reqInfo={this.state.donationFormReqInfo}
+                    updateQuantityFulfilled={this.updateQuantityFulfilled}
                   />
                 )}
               />
+              <Route exact path='/donate/:id/success' render={(routeProps) => <ConfirmPage {...routeProps} />} />
             </Switch>
           </main>
         </CssBaseline>
