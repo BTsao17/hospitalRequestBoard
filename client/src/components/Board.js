@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -92,8 +91,13 @@ class ReqTable extends React.Component {
     return stabilizedThis.map((el) => el[0]);
   };
 
+  handleClick = (id) => (event) => {
+    this.props.onRequestChoice(event, id);
+    this.props.history.push(`/donate/${id}`);
+  };
+
   render() {
-    const { requests} = this.props;
+    const { requests } = this.props;
 
     const sortedArray = this.stableSort(requests, this.getComparator(this.state.order, this.state.orderBy));
     const tableRows = sortedArray.map(({ id, hospital, dateAdded, item, quantity, quantityFulfilled }) => (
@@ -108,7 +112,7 @@ class ReqTable extends React.Component {
         </TableCell>
         <TableCell>{dateAdded.toDateString()}</TableCell>
         <TableCell>
-          <Button variant='outlined' component={Link} to='/donate'>
+          <Button variant='outlined' onClick={this.handleClick(id)}>
             Donate Now
           </Button>
         </TableCell>
@@ -158,8 +162,11 @@ class Board extends React.Component {
 
     return (
       <React.Fragment>
-        <div>filter bar</div>
-        <ReqTable requests={reqsWithHospName} />
+        <ReqTable
+          requests={reqsWithHospName}
+          onRequestChoice={this.props.onRequestChoice}
+          history={this.props.history}
+        />
       </React.Fragment>
     );
   }

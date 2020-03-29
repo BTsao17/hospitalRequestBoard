@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Typography from '@material-ui/core/Typography';
 import './App.css';
 import { Board, Form } from './components';
 
@@ -71,25 +72,67 @@ class App extends React.Component {
           status: false,
         },
       ],
+      donationFormHospInfo: {
+        id: null,
+        name: '',
+        address: '',
+        contact: '',
+        email: '',
+      },
+      donationFormReqInfo: {
+        id: null,
+        item: '',
+      },
     };
   }
+
+  handleRequestChoice = (event, id) => {
+    const chosenRequest = this.state.requests.find((request) => request.id === id);
+    const hospitalInfo = this.state.hospitals.find((hospital) => hospital.id === chosenRequest.hospital_ID);
+    let newObj = (({ id, item }) => ({ id, item }))(chosenRequest);
+
+    this.setState({
+      donationFormHospInfo: hospitalInfo,
+      donationFormReqInfo: newObj,
+    });
+  };
+
   render() {
-    const hospitalNamesID = this.state.hospitals.map(({ id, name }) => ({ id, name }));
+    const { hospitals } = this.state;
+    const hospitalNamesID = hospitals.map(({ id, name }) => ({ id, name }));
 
     return (
       <React.Fragment>
         <CssBaseline>
           <header>
-            <h1>Request Board</h1>
+            <Typography component='h1' variant='h2'>
+              Request Board
+            </Typography>
           </header>
           <main>
             <Switch>
               <Route
                 exact
                 path='/'
-                render={() => <Board hospitals={hospitalNamesID} requests={this.state.requests} />}
+                render={(routeProps) => (
+                  <Board
+                    {...routeProps}
+                    hospitals={hospitalNamesID}
+                    requests={this.state.requests}
+                    onRequestChoice={this.handleRequestChoice}
+                  />
+                )}
               />
-              <Route path='/donate' render={() => <Form />} />
+              <Route
+                path='/donate/:id'
+                render={(routeProps) => (
+                  <Form
+                    {...routeProps}
+                    hospInfo={this.state.donationFormHospInfo}
+                    reqInfo={this.state.donationFormReqInfo}
+                  />
+                )}
+              />
             </Switch>
           </main>
         </CssBaseline>
