@@ -1,0 +1,49 @@
+.header-padding {
+  padding: 0.5rem 0rem;
+}
+
+.tableContainer-padding {
+  padding: 1rem 1.5rem;
+}
+
+.form-title-spacing {
+  padding: 2rem 0rem 1rem 0rem;
+}
+
+.form-padding {
+  padding: 0rem 1rem 2rem 1rem;
+  width: 80%;
+}
+
+.form-subheading-spacing {
+  padding-top: 1rem;
+}
+
+.form-review-subheading {
+  padding-top: 0.5rem;
+}
+
+.form-review-body {
+  padding: 0.3rem 0rem;
+}
+
+.button-div-spacing {
+  margin-top: 2rem;
+}
+
+.buttons-floatLeft {
+  float: left;
+}
+
+.buttons-floatRight {
+  float: right;
+}
+
+.confirmPage-sizing {
+  padding: 2rem 1rem;
+  width: 80%;
+}
+
+.confirmPage-text-margin {
+  padding-bottom: 1.5rem;
+}

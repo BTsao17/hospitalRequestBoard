@@ -122,7 +122,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <CssBaseline>
-          <header>
+          <header className='header-padding'>
             <Typography component='h1' variant='h2'>
               Request Board
             </Typography>

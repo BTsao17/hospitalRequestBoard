@@ -121,7 +121,7 @@ class ReqTable extends React.Component {
 
     return (
       <React.Fragment>
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} elevation='3' className='tableContainer-padding'>
           <Table aria-label='request board'>
             <TableHeadings
               order={this.state.order}
