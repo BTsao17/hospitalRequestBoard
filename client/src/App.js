@@ -124,7 +124,7 @@ class App extends React.Component {
         <CssBaseline>
           <header className='header-padding'>
             <Typography component='h1' variant='h2'>
-              Request Board
+              Medical Supply Request Board
             </Typography>
           </header>
           <main>
